@@ -25,10 +25,10 @@ export default function ProductCard({carName, imgSrc, onCompare}:{carName:string
                 fill={true}
                 className="object-cover rounded-t-lg"/>
             </div>
-            <div className='w-full h-[15%] p-[10px] text-xl text-left underline font-medium' style={{color:"4D4C7D"}}>
+            <div className='w-full h-[15%] p-[10px] text-xl text-left underline font-medium' style={{color:"#4D4C7D"}}>
                 {carName}
             </div>
-            <div className='w-full h-[15%] p-[10px] text-base text-left' style={{color:"4D4C7D"}}>region : {}</div>
+            <div className='w-full h-[15%] p-[10px] text-base text-left' style={{color:"#4D4C7D"}}>region : {}</div>
             
         </InteractiveCard>
     );
