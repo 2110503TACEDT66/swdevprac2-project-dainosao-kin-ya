@@ -4,6 +4,7 @@ import TopMenuItem from './TopMenuItem'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { Link } from '@mui/material'
+import { Session } from 'inspector'
 
 export default async function TopMenu(){
     const session = await getServerSession(authOptions)
@@ -14,12 +15,15 @@ export default async function TopMenu(){
             <div className='flex flex-row absolute right-0 h-full'>
             {
                 session? 
-                <div>
-                <TopMenuItem title='View Hotels' pageRef='/hotel'/>
-                <Link href="/api/auth/signout">
-                    <div className='flex items-center h-full px-2 text-cyan-600 text-sm'>
-                    {session.user?.name}</div></Link></div>
-                    : <Link href="/api/auth/signin" className='decoration-none'>
+                <div className='z-30 flex flex-row'>
+                    <TopMenuItem title='View Hotels' pageRef='/hotels'/>
+                    <Link href="/api/auth/signout">
+                        <div className='flex items-center h-full px-2 text-cyan-600 text-sm'>
+                        {session.user?.name}</div>
+                    </Link>
+                </div>
+                
+                : <Link href="/api/auth/signin" className='decoration-none'>
                     <div className='flex items-center h-full px-2 text-white text-sm'>
                     Sign-In</div></Link>
             }
