@@ -8,13 +8,23 @@ export interface ReservationItem {
     returnLocation: string
 }
 
-export interface Hotel {
-    name: String,
-    address: String,
-    district: String,
-    province: String,
-    postalcode: String,
-    tel: String,
-    region: String,
-    picture: String
+export interface HotelJson {
+    success: boolean,
+    count: number,
+    pagination: Object,
+    data: HotelItem[]
+  }
+
+export interface HotelItem {
+    _id: string,
+    name: string,
+    address: string,
+    district: string,
+    province: string,
+    postalcode: string,
+    region: string,
+    tel: string,
+    picture: string,
+    __v: number,
+    id: string
 }

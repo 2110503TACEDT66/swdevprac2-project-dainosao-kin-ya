@@ -1,0 +1,37 @@
+import Image from "next/image"
+import getHotel from "@/libs/getHotel"
+import Link from "next/link"
+
+export default async function HotelDetailPage({params}: {params: {hid:string}}){
+
+    const hotelDetail = await getHotel(params.hid)
+
+    /**
+     * Mock data for demonstration
+     */
+    /*
+    const mockCarRepo = new Map()
+    mockCarRepo.set('001',{name:'Honda Civic', image:"/img/civic.jpg"})
+    mockCarRepo.set('002',{name:'Honda Accord', image:"/img/accord.jpg"})
+    mockCarRepo.set('003',{name:'Toyota Fortuner', image:"/img/fortuner.jpg"})
+    mockCarRepo.set('004',{name:'Tesla Model 3', image:"/img/tesla.jpg"})
+    */
+    
+    return(
+        <main className="text-center p-5">
+            <h1 className="text-lg font-medium">{hotelDetail.data.name}</h1>
+            <div className="flex flex-row my-5">
+                <Image src={hotelDetail.data.picture} alt="Product Picture" width={0} height={0} sizes="100vw"
+                className="rounded-lg w-[30%] bg-black" />
+                <div className="text-md mx-5 text-left">Name: {hotelDetail.data.name}
+                <div>{`Address: ${hotelDetail.data.address} ${hotelDetail.data.district}, ${hotelDetail.data.province}, ${hotelDetail.data.postalcode}`} </div>
+                <div>Telephone Number: {hotelDetail.data.tel}</div>
+                </div>
+            </div>
+        </main>
+    )
+}
+
+// export async function generateStaticParams() {
+//     return[{hid:'001'},{hid:'002'},{hid:'003'},{hid:'004'}]        
+// }
