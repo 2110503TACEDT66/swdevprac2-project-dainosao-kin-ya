@@ -17,24 +17,6 @@ export default async function HotelCatalog({hotelJson}:{hotelJson:Promise<HotelJ
     // //console.log(carItems)
     const dispatch = useDispatch<AppDispatch>()
 
-    // const favReducer = (favList:Map<string, boolean>, action:{hotelName:string, fav:boolean})=>{
-    //     if(action.hotelName){
-    //         if(favList.has(action.hotelName)){
-    //             if(!action.fav){
-    //                 favList.delete(action.hotelName)
-    //             }
-    //         }
-    //         else{
-    //             if(action.fav){
-    //                 favList.set(action.hotelName, action.fav)
-    //             }
-    //         }
-    //     }
-    // }
-
-    // const [favList, dispatchFav] = useReducer(favReducer, new Map<string,boolean>)
-
-
     const hotelJsonReady = await hotelJson
     return (
         <>
@@ -50,11 +32,26 @@ export default async function HotelCatalog({hotelJson}:{hotelJson:Promise<HotelJ
         </div>
         <div style={{margin: "20px", display:"flex", flexDirection:"row", alignContent:"space-around", justifyContent:"space-around", flexWrap:"wrap"}}>
                 {
+                    favourite ?
+                    hotelJsonReady.data.map((hotelItem:HotelItem)=>(
+                        (favItems.filter((obj:string)=> obj==hotelItem.name)).length >= 1 ?
+                        <Link href={`/hotels/${hotelItem.id}`} 
+                        className="w-[100%] sm:w-[55%] md:w-[35%] lg:w-[30%]
+                        p-2 sm:p-4 md:p-4 lg:p-8">
+                        <ProductCard hotelName={hotelItem.name} region={hotelItem.region} 
+                        fav={(favItems.filter((obj:string)=> obj==hotelItem.name)).length >= 1 ? true : false} 
+                        imgSrc={hotelItem.picture}/>
+                        </Link>
+                        : null
+                    ))
+                    :
                     hotelJsonReady.data.map((hotelItem:HotelItem)=>(
                         <Link href={`/hotels/${hotelItem.id}`} 
                         className="w-[100%] sm:w-[55%] md:w-[35%] lg:w-[30%]
                         p-2 sm:p-4 md:p-4 lg:p-8">
-                        <ProductCard hotelName={hotelItem.name} region={hotelItem.region} fav={false} imgSrc={hotelItem.picture}/>
+                        <ProductCard hotelName={hotelItem.name} region={hotelItem.region} 
+                        fav={(favItems.filter((obj:string)=> obj==hotelItem.name)).length >= 1 ? true : false} 
+                        imgSrc={hotelItem.picture}/>
                         </Link>
                     ))
                 }
