@@ -1,5 +1,5 @@
 import React from 'react'
-import LocationDateReserve from './LocationDateReserve'
+import LocationDateReserve from './DateReserve'
 
 describe('<LocationDateReserve />', () => {
 

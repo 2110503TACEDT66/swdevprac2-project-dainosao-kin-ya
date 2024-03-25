@@ -1,11 +1,7 @@
 export interface ReservationItem {
-    carId: string,
-    carModel: string,
-    numOfDays: number,
-    pickupDate: string,
-    pickupLocation: string,
-    returnDate: string,
-    returnLocation: string
+    hotelId: string,
+    revDate: string,
+    nightNum: number,
 }
 
 export interface HotelJson {

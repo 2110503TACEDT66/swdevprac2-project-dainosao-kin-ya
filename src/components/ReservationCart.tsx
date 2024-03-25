@@ -1,5 +1,5 @@
 'use client'
-import { removeReservation } from "@/redux/features/cartSlice"
+import { removeReservation } from "@/redux/features/reserveSlice"
 import { useAppSelector } from "@/redux/store"
 import { AppDispatch } from "@/redux/store"
 import { useDispatch } from "react-redux"

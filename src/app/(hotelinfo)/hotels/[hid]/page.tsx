@@ -1,5 +1,6 @@
 import Image from "next/image"
 import getHotel from "@/libs/getHotel"
+import Link from "next/link";
 export default async function HospitalDetailPage({params}:{params:{hid:string}}){
 
     const hosDetail = await getHotel(params.hid)
@@ -10,7 +11,7 @@ export default async function HospitalDetailPage({params}:{params:{hid:string}})
                 <Image src={hosDetail.data.picture} alt="hosImg" fill={true} objectFit="cover"/>
             </div>
             <h1 className="text-5xl font-medium relative text-center bg-blue-950 text-white pt-10 pb-10 italic">{hosDetail.data.name}</h1>
-            <div className="flex flex-row my-5">
+            <div className="flex text-[#363062] flex-row my-5">
                 <div className="text-md mx-5 text-left text-xl ml-20">
                 <div> 
                     <span className="font-semibold">
@@ -27,7 +28,7 @@ export default async function HospitalDetailPage({params}:{params:{hid:string}})
                     </span>
                     {" "}
                     <span>
-                         {}
+                         {hosDetail.data.region}
                     </span>
                 </div>
                 <div>
@@ -42,7 +43,10 @@ export default async function HospitalDetailPage({params}:{params:{hid:string}})
                 </div>
             </div>
             <div className="text-center">
-                <button className="bg-[#F99417] text-white rounded-lg px-[40%] mb-10 py-2 text-lg">Reserve this Hotel</button>
+                <Link href={`/reservations?id=${params.hid}&name=${hosDetail.data.name}`}>
+                <button className="bg-[#F99417] text-white rounded-lg px-[40%] mb-10 py-2 text-lg">
+                    Reserve this Hotel</button>
+                </Link>
             </div>
         </main>
     );
