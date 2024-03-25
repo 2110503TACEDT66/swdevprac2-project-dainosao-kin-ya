@@ -1,4 +1,4 @@
-import CarCatalog from "@/components/CarCatalog";
+import CarCatalog from "@/components/HotelCatalog";
 import { render, screen, waitFor } from '@testing-library/react'
 
 const mockResult = {

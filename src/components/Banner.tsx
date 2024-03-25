@@ -21,12 +21,12 @@ export default function Banner() {
                 </div>
             </div>
             {
-                session ? <div className='z-30 absolute top-5 right-10 font-semibold text-cyan-800 text-xl'>Welcome {session.user?.name}</div>
+                session ? <div className='z-30 absolute top-5 right-20 font-semibold text-white text-xl'>Welcome {session.user?.name}</div>
                 : null
             }
             <button className='bg-[#F99417] text-white border border-[#F99417] font-semibold py-2 px-2 m-2 rounded z-30 absolute bottom-0 right-0
             hover:bg-white hover:text-[#F99417] hover:border-transparent'
-            onClick={(e) => { e.stopPropagation(); router.push('/car')}}>
+            onClick={(e) => { e.stopPropagation(); router.push('/hotels')}}>
                 View All Hotels
             </button>
         </div>
