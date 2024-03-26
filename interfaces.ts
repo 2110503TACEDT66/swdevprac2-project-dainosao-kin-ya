@@ -9,7 +9,30 @@ export interface HotelJson {
     count: number,
     pagination: Object,
     data: HotelItem[]
-  }
+}
+
+export interface ReserveJson {
+    success: boolean,
+    count: number,
+    pagination: Object,
+    data: HotelItem[]
+}
+
+export interface Reservation{
+    _id: string,
+    revDate : Date,
+    nightNum: number,
+    user: string,
+    hotel: {
+        _id: string,
+        name: string,
+        province: string,
+        tel: string,
+        id: string
+    },
+    createdAt: Date,
+    __v: number
+}
 
 export interface HotelItem {
     _id: string,
