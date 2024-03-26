@@ -9,6 +9,10 @@ import { addReservation } from "@/redux/features/reserveSlice";
 import { ReservationItem } from "../../../interfaces";
 import { TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { dbConnect } from "@/db/dbConnect";
+import { useEffect } from "react";
+import Reservation from "@/db/models/Reservation";
+import createReservation from "@/libs/createReservation";
 
 export default function Reservations(){
 
@@ -16,19 +20,39 @@ export default function Reservations(){
     const hid = urlParams.get('id')
     const name = urlParams.get('name')
 
-    const dispatch = useDispatch<AppDispatch>()
+    //const dispatch = useDispatch<AppDispatch>()
     const { data: session } = useSession();
 
-    const makeReservation = () => {
-        if(hid && revDate && nightNum){
+    
+    const makeReservation = async() => {
+        // 'use server'
+        //var reservationDate = dayjs(revDate).format("YYYY/MM/DD")
+        if(hid && revDate && nightNum && session?.user?.token){
+            // try{
+            //     await dbConnect()
+            //     const reservation = await Reservation.create({
+            //         "revDate": revDate,
+            //         "nightNum": nightNum,
+            //         "user": session?.user?._id,
+            //         "hotel": hid,
+            //         "createdAt": Date.now,
+            //     })
+            // }catch(error){
+            //     console.log(error)
+            //     alert(error)
+            // }
             const item:ReservationItem = {
                 hotelId: hid,
                 revDate: dayjs(revDate).format("YYYY/MM/DD"),
                 nightNum: nightNum
             }
-            dispatch(addReservation(item))
+            const response = await createReservation(session?.user?.token,item)
+            console.log(response)
+            //dispatch(addReservation(item))
         }
     }
+    
+    
 
     const [revDate, setRevDate] = useState<Dayjs|null>(null)
     const [nightNum, setnightNum] = useState<number>(1)
@@ -47,14 +71,17 @@ export default function Reservations(){
                 
                 <div className="text-xl mt-[20px] font-bold text-left text-[#363062] items-end justify-start align-middle">
                     <div className="mb-[12px]">Number of nights : </div>
-                    <TextField id="nightNum" name="nightNum" type="number"
+                    {/*<input type="number" required id="nightNum" name="nightNum" 
+                    placeholder="(Minimun 1 night, Maximum 3 nights)" min={1} max={3}
+                        className="bg-white border-2 border-gray-200 rounded text-gray-700 focus:outline-none h-fit p-2 w-[100%] focus:border-[#363062]"/>*/}
+                    { <TextField id="nightNum" name="nightNum" type="number"
                     label="(Minimun 1 night, Maximum 3 nights)" variant="outlined" 
                     className="h-fit p-2 w-[100%] focus:border-[#363062]"
                     value={nightNum} onChange={(e)=>{
                         var num = Number(e.currentTarget.value)
                         if(num<1){num = 1;}
                         else if(num>3){num = 3;}
-                        setnightNum(num)}}/>
+                        setnightNum(num)}}/> }
                 </div>
 
                 <div>
