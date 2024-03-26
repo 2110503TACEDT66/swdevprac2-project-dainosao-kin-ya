@@ -1,18 +1,32 @@
-import { useAppSelector } from "@/redux/store";
-import { removeReservation } from "@/redux/features/reserveSlice";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
 import { ReserveJson, Reservation } from "interfaces";
 import getReservation from "@/libs/getReservation";
 import { useSession } from "next-auth/react";
 import dayjs, { Dayjs } from "dayjs";
+import { getToken } from "next-auth/jwt";
+import { data } from "node_modules/cypress/types/jquery";
+import { wait } from "node_modules/@testing-library/user-event/dist/types/utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import deleteReservation from "@/libs/deleteReservation";
+import { redirect } from "next/navigation";
+import DeleteReserve from "./DeleteReserve";
+
 
 export default async function BookingList ({reserveJson}:{reserveJson:Promise<ReserveJson>}) {
     //const { data: session } = useSession();
     const reserveJsonReady = await reserveJson
-    
+    const token = getToken
+    const session = await getServerSession(authOptions) ;
+    if ( !session || !session.user.token) return null
+
+    // async function deleteReservations(hid : string){
+    //     if(session?.user.token && hid){
+    //         await deleteReservation(session?.user.token , hid)
+    //         redirect('/reservations/mybooking')
+    //     }
+    // }
 
     return (
         <div>
@@ -22,7 +36,7 @@ export default async function BookingList ({reserveJson}:{reserveJson:Promise<Re
             { (reserveJsonReady && reserveJsonReady.count > 0) ? 
             (
                 reserveJsonReady.data.map((reserve:Reservation) => (
-                    <div className="bg-slate-200 mb-10 rounded-lg w-[77%] h-[160px] relative flex flex-row shadow-lg">
+                    <div className="bg-slate-200 mb-10 rounded-lg w-[77%] h-[150px] relative flex flex-row shadow-lg" key={reserve._id}>
                             <div className="h-full w-[30%] relative rounded-lg">
                                 <Image src={reserve.hotel.picture} alt='hosImg' fill={true} className="object-cover rounded-l-lg"/>                   
                             </div>
@@ -37,10 +51,8 @@ export default async function BookingList ({reserveJson}:{reserveJson:Promise<Re
                             <Link  href={`/reservations/${reserve._id}?hid=${reserve.hotel.id}&name=${reserve.hotel.name}`}>
                             <button className="px-3 py-1 text-white shadow-sm rounded-lg bg-[#F99417] absolute h-[40px] w-[80px] right-[14%] top-2" 
                             >Edit</button></Link>
-                            <Link href={''}>
-                            <button className="px-3 py-1 text-white shadow-sm rounded-lg bg-red-600 absolute h-[40px] w-[80px] right-[2%] top-2"
-                            >Delete</button>
-                            </Link>
+                        
+                            <DeleteReserve token={session.user.token} rid={reserve._id}/>
                             
                     </div>
                 ))
