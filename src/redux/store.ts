@@ -10,7 +10,7 @@ const persistConfig = {
     storage
 }
 
-const rootReducer = combineReducers({reserveSlice,favSlice})
+const rootReducer = combineReducers({favSlice})
 const reduxPersistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({

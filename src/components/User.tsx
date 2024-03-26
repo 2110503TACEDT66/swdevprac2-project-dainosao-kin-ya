@@ -12,7 +12,7 @@ export default async function User() {
     var createdAt = new Date(profile.data.session)
 
     return (
-        <div className="absolute h-full w-[25%] top-0 right-0 bottom-0 mt-[50px]">
+        <div className="fixed h-full w-[25%] top-0 right-0 bottom-0 mt-[50px]">
         <div className="w-full h-[15%]">
         <div className="h-[20%] bg-white-200 text-center">
             <div className="underline text-[#F99417] my-5">User's datails</div>
