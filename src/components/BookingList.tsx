@@ -22,9 +22,9 @@ export default async function BookingList ({reserveJson}:{reserveJson:Promise<Re
             { (reserveJsonReady && reserveJsonReady.count > 0) ? 
             (
                 reserveJsonReady.data.map((reserve:Reservation) => (
-                    <div className="bg-slate-200 mb-10 rounded-lg w-[77%] h-[150px] relative flex flex-row shadow-lg">
+                    <div className="bg-slate-200 mb-10 rounded-lg w-[77%] h-[160px] relative flex flex-row shadow-lg">
                             <div className="h-full w-[30%] relative rounded-lg">
-                                <Image src={reserve.hotel.picture} alt='hosImg' fill={true} className="object-cover rounded-lg"/>                   
+                                <Image src={reserve.hotel.picture} alt='hosImg' fill={true} className="object-cover rounded-l-lg"/>                   
                             </div>
                             <div className="flex flex-col">
                                 <div className="flex flex-row text-4xl font-semibold underline relative left-7 top-2"> {reserve.hotel.name}</div>

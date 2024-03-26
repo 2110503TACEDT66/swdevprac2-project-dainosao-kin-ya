@@ -24,7 +24,7 @@ export default async function TopMenu(){
                     <TopMenuItem title='My Booking' pageRef='/reservations/mybooking'/>
                     </div>
                     
-                    <Link href="/api/auth/signout">
+                    <Link href="/reservations/mybooking">
                         <div className='flex items-center right-0 absolute h-full px-2 mx-5 text-white text-md'>
                         {session.user?.name}</div>
                     </Link>
