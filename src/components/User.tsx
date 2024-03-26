@@ -2,6 +2,7 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 import getUserProfile from "@/libs/getUserProfile"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import dayjs from "dayjs"
 
 export default async function User() {
 
@@ -9,7 +10,7 @@ export default async function User() {
     if(!session || !session.user.token) return null
 
     const profile = await getUserProfile(session.user.token)
-    var createdAt = new Date(profile.data.session)
+    //var createdAt = new Date(profile.data.session)
 
     return (
         <div className="absolute h-full w-[25%] top-0 right-0 bottom-0 mt-[50px]">
@@ -24,7 +25,7 @@ export default async function User() {
         <div className="m-5 my-5">Name: {profile.data.name}</div>
             <div className="m-5">Tel: {profile.data.tel}</div>
             <div className="m-5">Email: {profile.data.email}</div>
-            <div className="m-5">Member Since: {createdAt.toString()}</div>
+            <div className="m-5">Member Since: {dayjs(profile.data.createdAt).format("YYYY/MM/DD")}</div>
             <div className="absolute bottom-[10%] w-full flex flex-col justify-center items-center">
             {
                 profile.data.role=='admin'? 
