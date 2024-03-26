@@ -8,6 +8,7 @@ import { Session } from 'inspector'
 
 export default async function TopMenu(){
     const session = await getServerSession(authOptions)
+    
 
     return (
         <div className={styles.menucontainer}>

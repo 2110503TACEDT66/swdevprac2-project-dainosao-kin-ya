@@ -15,7 +15,7 @@ export default async function BookingList ({reserveJson}:{reserveJson:Promise<Re
     
 
     return (
-        <div className="">
+        <div>
             <div className="text-[#363062] flex flex-col items-center justify-center my-10 mr-[20%]">
             <div className="font-semibold text-5xl m-10">Your Reservations</div>
                 
