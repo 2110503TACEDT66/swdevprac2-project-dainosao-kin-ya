@@ -1,43 +1,41 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { getServerSession } from "next-auth"
 import getUserProfile from "@/libs/getUserProfile"
-import Car from "@/db/models/Car"
+import Hotel from "@/db/models/Hotel"
 import { dbConnect } from "@/db/dbConnect"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 
 export default async function DashboardPage(){
 
-    const addCar = async (addCarForm:FormData) => {
+    const addHotel = async (addHotelForm:FormData) => {
         "use server"
-        const model = addCarForm.get("model")
-        const description = addCarForm.get("desc")
-        const picture = addCarForm.get("picture")
-        const seats = addCarForm.get("seats")
-        const doors = addCarForm.get("doors")
-        const largebags = addCarForm.get("largebags")
-        const smallbags = addCarForm.get("smallbags")
-        const automatic = true
-        const dayRate = addCarForm.get("dayRate")
+        const name = addHotelForm.get("name")
+        const address = addHotelForm.get("address")
+        const district = addHotelForm.get("district")
+        const province = addHotelForm.get("province")
+        const postal = addHotelForm.get("postal")
+        const tel = addHotelForm.get("tel")
+        const region = addHotelForm.get("region")
+        const picture = addHotelForm.get("picture")
 
         try{
             await dbConnect()
-            const car = await Car.create({
-                "model": model,
-                "description": description,
-                "picture": picture,
-                "seats":seats,
-                "doors":doors,
-                "largebags":largebags,
-                "smallbags":smallbags,
-                "automatic":automatic,
-                "dayRate":dayRate
+            const hotel = await Hotel.create({
+                "name": name,
+                "address": address,
+                "district": district,
+                "province": province,
+                "postalcode": postal,
+                "tel": tel,
+                "region": region,
+                "picture": picture 
             })
         }catch(error){
             console.log(error)
         }
-        revalidateTag("cars")
-        redirect("/car")
+        revalidateTag("hotels")
+        redirect("/hotels")
     }
 
     const session = await getServerSession(authOptions)
@@ -51,45 +49,45 @@ export default async function DashboardPage(){
             
             {
                 (profile.data.role=="admin")?
-                <form action={addCar}>
+                <form action={addHotel}>
                     <div className="justify-center flex flex-col">
-                    <div className="text-4xl font-bold text-blue-700 text-center text-[#363062] underline">Add Hotel</div>
+                    <div className="text-4xl font-bold text-center text-[#363062] underline">Add Hotel</div>
 
                     <div className="mx-auto">
                     <div className="mx-auto block items-center w-3/4 my-2">
-                        <label className="w-auto block text-gray-700 pr-4" htmlFor="name">Hotel Name:</label>
+                        <label className="w-auto block text-[#363062]" htmlFor="name">Hotel Name: </label>
                         <input type="text" required id="name" name="name" placeholder="Hotel Name"
                         className="bg-white border-2 border-gray-200 rounded w-full p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
                     </div>
                     <div className="mx-auto block items-center w-3/4 my-2">
-                        <label className="w-auto block text-gray-700 pr-4" htmlFor="Address">Address:</label>
-                        <input type="text" required id="Address" name="Address" placeholder="Address"
+                        <label className="w-auto block text-[#363062]" htmlFor="address">Address: </label>
+                        <input type="text" required id="address" name="address" placeholder="Address"
                         className="bg-white border-2 border-gray-200 rounded w-full p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
                     </div>
                     <div className="mx-auto flex items-center w-3/4 my-2">
-                        <label className="w-auto block text-gray-700 pr-4" htmlFor="district">District:</label>
-                        <input type="number" required id="district" name="district" placeholder="District"
+                        <label className="w-auto block text-[#363062]" htmlFor="district">District: </label>
+                        <input type="text" required id="district" name="district" placeholder="District"
                         className="bg-white border-2 border-gray-200 rounded w-1/2 p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
-                        <label className="w-auto block text-gray-700 pr-4 ml-5" htmlFor="province">Province:</label>
-                        <input type="number" required id="province" name="province" placeholder="Province"
+                        <label className="w-auto block text-[#363062] ml-5" htmlFor="province">Province: </label>
+                        <input type="text" required id="province" name="province" placeholder="Province"
                         className="bg-white border-2 border-gray-200 rounded w-1/2 p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
                     </div>
                     <div className="mx-auto flex items-center w-3/4 my-2">
-                        <label className="w-auto block text-gray-700 pr-4" htmlFor="postal">Postal Code:</label>
-                        <input type="number" required id="postal" name="postal" placeholder="Postal Code"
+                        <label className="w-auto block text-[#363062]" htmlFor="postal">Postal Code: </label>
+                        <input type="text" required id="postal" name="postal" placeholder="Postal Code"
                         className="bg-white border-2 border-gray-200 rounded w-1/2 p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
-                        <label className="w-auto block text-gray-700 pr-4 ml-5" htmlFor="tel">Telephone Number:</label>
-                        <input type="number" required id="tel" name="tel" placeholder="Telephone Number"
+                        <label className="w-auto block text-[#363062] ml-5" htmlFor="tel">Telephone Number: </label>
+                        <input type="text" required id="tel" name="tel" placeholder="xxx-xxx-xxxx"
                         className="bg-white border-2 border-gray-200 rounded w-1/2 p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
                     </div>
                     
                     <div className="mx-auto block items-center w-3/4 my-2">
-                        <label className="w-auto block text-gray-700 pr-4" htmlFor="region">Region:</label>
+                        <label className="w-auto block text-[#363062]" htmlFor="region">Region: </label>
                         <input type="text" required id="region" name="region" placeholder="Region"
                         className="bg-white border-2 border-gray-200 rounded w-full p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
                     </div>
                     <div className="mx-auto block items-center w-3/4 my-2">
-                        <label className="w-auto block text-gray-700 pr-4" htmlFor="name">Picture URI:</label>
+                        <label className="w-auto block text-[#363062]" htmlFor="name">Picture URI: </label>
                         <input type="text" required id="picture" name="picture" placeholder="Picture URI"
                         className="bg-white border-2 border-gray-200 rounded w-full p-2 text-gray-700 focus:outline-none focus:border-blue-400"/>
                     </div>

@@ -11,7 +11,6 @@ import { TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { dbConnect } from "@/db/dbConnect";
 import { useEffect } from "react";
-import Reservation from "@/db/models/Reservation";
 import createReservation from "@/libs/createReservation";
 
 export default function Reservations(){
