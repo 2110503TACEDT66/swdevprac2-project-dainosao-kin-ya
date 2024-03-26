@@ -6,53 +6,45 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { addReservation } from "@/redux/features/reserveSlice";
-import { ReservationItem } from "../../../interfaces";
+import { ReservationItem } from "interfaces";
 import { TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { dbConnect } from "@/db/dbConnect";
 import { useEffect } from "react";
-import createReservation from "@/libs/createReservation";
+import { revalidateTag } from "next/cache"
+import { redirect } from "next/navigation"
+import updateReservation from "@/libs/updateReservation";
 import { useRouter } from "next/navigation";
-
-export default function Reservations(){
+export default function Reservations({params}:{params:{rid:string}}){
 
     const urlParams = useSearchParams()
-    const hid = urlParams.get('id')
+    const hid = urlParams.get('hid')
     const name = urlParams.get('name')
 
-    const router = useRouter();
+    const router = useRouter()
 
     //const dispatch = useDispatch<AppDispatch>()
     const { data: session } = useSession();
 
     
-    const makeReservation = async() => {
+    const editReservation = async() => {
         // 'use server'
         //var reservationDate = dayjs(revDate).format("YYYY/MM/DD")
-        if(hid && revDate && nightNum && session?.user?.token){
-            // try{
-            //     await dbConnect()
-            //     const reservation = await Reservation.create({
-            //         "revDate": revDate,
-            //         "nightNum": nightNum,
-            //         "user": session?.user?._id,
-            //         "hotel": hid,
-            //         "createdAt": Date.now,
-            //     })
-            // }catch(error){
-            //     console.log(error)
-            //     alert(error)
-            // }
+        console.log(params.rid)
+        if(params.rid && hid && revDate && nightNum && session?.user?.token){
             const item:ReservationItem = {
                 hotelId: hid,
                 revDate: dayjs(revDate).format("YYYY/MM/DD"),
                 nightNum: nightNum
             }
-            const response = await createReservation(session?.user?.token,item)
+            const response = await updateReservation(session?.user?.token, params.rid, item)
             console.log(response)
             router.push('/reservations/mybooking')
             //dispatch(addReservation(item))
         }
+        //revalidateTag("reservations")
+        //redirect("/reservations/mybooking")
+        
     }
     
     
@@ -63,7 +55,7 @@ export default function Reservations(){
     return(
         <main className="w-[100%] flex flex-col items-center space-y-4">
             <div className="text-4xl mt-10 underline text-[#363062] font-medium">{name}</div>
-            <div className="text-xl italic font-medium text-[#4D4C7D]">New Reservation</div>
+            <div className="text-xl italic font-medium text-[#4D4C7D]">Edit Reservation</div>
             <div className="w-1/3 space-y-10">
                 <div>
                     <div className="text-xl font-bold text-left text-[#363062]">
@@ -98,8 +90,8 @@ export default function Reservations(){
                 </div>
                 <button className='w-[100%] bg-[#F99417] text-white border-2 border-[#F99417] font-semibold py-2  mt-5 rounded
                 hover:bg-white hover:text-[#F99417]'
-                onClick={makeReservation}>
-                Make this reservation
+                onClick={editReservation}>
+                Edit this reservation
                 </button>
             </div>
             

@@ -15,19 +15,23 @@ export interface ReserveJson {
     success: boolean,
     count: number,
     pagination: Object,
-    data: HotelItem[]
+    data: Reservation[]
 }
 
 export interface Reservation{
     _id: string,
     revDate : Date,
     nightNum: number,
-    user: string,
+    user: {
+        _id: string,
+        name: string
+    },
     hotel: {
         _id: string,
         name: string,
         province: string,
         tel: string,
+        picture: string,
         id: string
     },
     createdAt: Date,
