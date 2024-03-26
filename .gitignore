@@ -34,3 +34,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#cypress
+/cypresss
+src/components/*.cy.tsx
+cypress.config.ts
+
+#jest
+/_tests_
+jest.config.js
+jest.setup.js
