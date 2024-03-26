@@ -1,9 +1,6 @@
 'use client'
 
 export default function InteractiveCard({children, contentName}:{children: React.ReactNode, contentName:string}){
-    function onCarSelect(){
-        alert("You Select " + contentName)
-    }
 
     function onCardMouseAction(event:React.SyntheticEvent){
         if(event.type=='mouseover'){

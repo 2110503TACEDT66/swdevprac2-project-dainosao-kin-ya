@@ -6,8 +6,6 @@ import { useState } from "react";
 import { ReservationItem } from "../../../interfaces";
 import { TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { dbConnect } from "@/db/dbConnect";
-import { useEffect } from "react";
 import createReservation from "@/libs/createReservation";
 import { useRouter } from "next/navigation";
 
@@ -19,27 +17,13 @@ export default function Reservations(){
 
     const router = useRouter();
 
-    //const dispatch = useDispatch<AppDispatch>()
+    
     const { data: session } = useSession();
 
     
     const makeReservation = async() => {
-        // 'use server'
-        //var reservationDate = dayjs(revDate).format("YYYY/MM/DD")
+    
         if(hid && revDate && nightNum && session?.user?.token){
-            // try{
-            //     await dbConnect()
-            //     const reservation = await Reservation.create({
-            //         "revDate": revDate,
-            //         "nightNum": nightNum,
-            //         "user": session?.user?._id,
-            //         "hotel": hid,
-            //         "createdAt": Date.now,
-            //     })
-            // }catch(error){
-            //     console.log(error)
-            //     alert(error)
-            // }
             const item:ReservationItem = {
                 hotelId: hid,
                 revDate: dayjs(revDate).format("YYYY/MM/DD"),
@@ -47,8 +31,7 @@ export default function Reservations(){
             }
             const response = await createReservation(session?.user?.token,item)
             console.log(response)
-            router.push('/reservations/mybooking')
-            //dispatch(addReservation(item))
+            router.push('/mybooking')
         }
     }
     

@@ -16,13 +16,10 @@ export default function Reservations({params}:{params:{rid:string}}){
 
     const router = useRouter()
 
-    //const dispatch = useDispatch<AppDispatch>()
     const { data: session } = useSession();
 
     
     const editReservation = async() => {
-        // 'use server'
-        //var reservationDate = dayjs(revDate).format("YYYY/MM/DD")
         console.log(params.rid)
         if(params.rid && hid && revDate && nightNum && session?.user?.token){
             const item:ReservationItem = {
@@ -32,12 +29,8 @@ export default function Reservations({params}:{params:{rid:string}}){
             }
             const response = await updateReservation(session?.user?.token, params.rid, item)
             console.log(response)
-            router.push('/reservations/mybooking')
-            //dispatch(addReservation(item))
+            router.push('/mybooking')
         }
-        //revalidateTag("reservations")
-        //redirect("/reservations/mybooking")
-        
     }
     
     
@@ -47,8 +40,8 @@ export default function Reservations({params}:{params:{rid:string}}){
 
     return(
         <main className="w-[100%] flex flex-col items-center space-y-4">
-            <div className="text-4xl mt-10 underline text-[#363062] font-medium">{name}</div>
-            <div className="text-xl italic font-medium text-[#4D4C7D]">Edit Reservation</div>
+            <div className="text-4xl font-bold mt-10 underline text-[#363062]">{name}</div>
+            <div className="text-2xl italic font-medium text-[#4D4C7D]">Edit Reservation</div>
             <div className="w-1/3 space-y-10">
                 <div>
                     <div className="text-xl font-bold text-left text-[#363062]">
@@ -59,17 +52,14 @@ export default function Reservations({params}:{params:{rid:string}}){
                 
                 <div className="text-xl mt-[20px] font-bold text-left text-[#363062] items-end justify-start align-middle">
                     <div className="mb-[12px]">Number of nights : </div>
-                    {/*<input type="number" required id="nightNum" name="nightNum" 
-                    placeholder="(Minimun 1 night, Maximum 3 nights)" min={1} max={3}
-                        className="bg-white border-2 border-gray-200 rounded text-gray-700 focus:outline-none h-fit p-2 w-[100%] focus:border-[#363062]"/>*/}
-                    { <TextField id="nightNum" name="nightNum" type="number"
+                    <TextField id="nightNum" name="nightNum" type="number"
                     label="(Minimun 1 night, Maximum 3 nights)" variant="outlined" 
                     className="h-fit p-2 w-[100%] focus:border-[#363062]"
                     value={nightNum} onChange={(e)=>{
                         var num = Number(e.currentTarget.value)
                         if(num<1){num = 1;}
                         else if(num>3){num = 3;}
-                        setnightNum(num)}}/> }
+                        setnightNum(num)}}/>
                 </div>
 
                 <div>

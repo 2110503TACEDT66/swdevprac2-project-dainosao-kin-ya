@@ -1,41 +1,45 @@
+'use client'
 import Image from "next/image";
 import Link from "next/link";
 import { ReserveJson, Reservation } from "interfaces";
-import getReservation from "@/libs/getReservation";
-import { useSession } from "next-auth/react";
 import dayjs, { Dayjs } from "dayjs";
-import { getToken } from "next-auth/jwt";
-import { data } from "node_modules/cypress/types/jquery";
-import { wait } from "node_modules/@testing-library/user-event/dist/types/utils";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import getReservation from "@/libs/getReservation";
+import { useEffect } from "react";
+import { useState } from "react";
+
 import deleteReservation from "@/libs/deleteReservation";
-import { redirect } from "next/navigation";
-import DeleteReserve from "./DeleteReserve";
 
 
-export default async function BookingList ({reserveJson}:{reserveJson:Promise<ReserveJson>}) {
-    //const { data: session } = useSession();
-    const reserveJsonReady = await reserveJson
-    const token = getToken
-    const session = await getServerSession(authOptions) ;
-    if ( !session || !session.user.token) return null
+export default function BookingList ({session}:{session:any}) {
 
-    // async function deleteReservations(hid : string){
-    //     if(session?.user.token && hid){
-    //         await deleteReservation(session?.user.token , hid)
-    //         redirect('/reservations/mybooking')
-    //     }
-    // }
+    async function data() {
+        await new Promise((resolve) => setTimeout(resolve,500))
+        const reserveJson:Promise<ReserveJson> = await getReservation(session.user.token)
+        const reserveJsonReady:ReserveJson = await reserveJson
+        setReservations(reserveJsonReady)
+    }
+
+    const [reservations, setReservations] = useState<ReserveJson>()
+    
+    useEffect(() => {
+        data()
+      }, []);
+
+    async function deleteReservations(token:string, rid:string){
+        if(token && rid){
+            await deleteReservation(token , rid)
+            data()
+        }
+    }
 
     return (
         <div>
             <div className="text-[#363062] flex flex-col items-center justify-center my-10 mr-[20%]">
             <div className="font-semibold text-5xl m-10">Your Reservations</div>
                 
-            { (reserveJsonReady && reserveJsonReady.count > 0) ? 
+            { (reservations && reservations.count > 0) ? 
             (
-                reserveJsonReady.data.map((reserve:Reservation) => (
+                reservations.data.map((reserve:Reservation) => (
                     <div className="bg-slate-200 mb-10 rounded-lg w-[77%] h-[150px] relative flex flex-row shadow-lg" key={reserve._id}>
                             <div className="h-full w-[30%] relative rounded-lg">
                                 <Image src={reserve.hotel.picture} alt='hosImg' fill={true} className="object-cover rounded-l-lg"/>                   
@@ -52,7 +56,8 @@ export default async function BookingList ({reserveJson}:{reserveJson:Promise<Re
                             <button className="px-3 py-1 text-white shadow-sm rounded-lg bg-[#F99417] absolute h-[40px] w-[80px] right-[14%] top-2" 
                             >Edit</button></Link>
                         
-                            <DeleteReserve token={session.user.token} rid={reserve._id}/>
+                            <button className="px-3 py-1 text-white shadow-sm rounded-lg bg-red-600 absolute h-[40px] w-[80px] right-[2%] top-2"
+                            onClick={()=>{deleteReservations(session.user.token, reserve._id)}}>Delete</button>
                             
                     </div>
                 ))

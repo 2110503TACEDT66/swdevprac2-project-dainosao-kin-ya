@@ -4,11 +4,7 @@ import ProductCard from "./ProductCard";
 import Link from "next/link";
 import { HotelJson, HotelItem } from "interfaces";
 import { useState } from "react";
-import { checkFav } from "@/redux/features/favSlice";
 import { useAppSelector } from "@/redux/store"
-import { AppDispatch } from "@/redux/store"
-import { useDispatch } from "react-redux"
-import { useReducer } from "react";
 
 export default async function HotelCatalog({hotelJson}:{hotelJson:Promise<HotelJson>}){
 
