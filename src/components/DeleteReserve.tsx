@@ -8,6 +8,7 @@ export default function DeleteReserve({token, rid}:{token:string, rid:string}){
     async function deleteReservations(){
         if(token && rid){
             await deleteReservation(token , rid)
+            window.location.reload
             router.push('/reservations/mybooking')
         }
     }

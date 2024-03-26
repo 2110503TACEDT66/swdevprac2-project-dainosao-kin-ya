@@ -5,7 +5,6 @@ export default async function deleteReservation(token: string, reserveId : strin
         method : "DELETE",
         headers: {
             authorization : `Bearer ${token}`,
-            "Content-Type": "application/json"
         }
     })
 
